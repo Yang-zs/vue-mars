@@ -1,35 +1,41 @@
-//导入axios
 import axios from 'axios'
-// 配置请求的基准URL地址
 const service = axios.create({
-  baseURL: 'process.env.VUE_APP_BASE_API',
-  timeout: 1000
+  baseURL: process.env.VUE_APP_SERVICE_URL,
+  timeout: 5000
 })
-// 添加请求拦截器
+
 service.interceptors.request.use(
-  function (config) {
-    // 在发送请求之前做些什么
+  (config) => {
     return config
   },
-  function (error) {
-    // 对请求错误做些什么
+  (error) => {
     return Promise.reject(error)
   }
 )
 
-// 添加响应拦截器
 service.interceptors.response.use(
-  function (response) {
-    // 对响应数据做点什么
-    return response
+  (response) => {
+    // const authorization = response.headers.authorization
+    // if (authorization) {
+    //   store.commit('user/SET_TOKEN', authorization)
+    // }
+    if (response.data.code === 200) {
+      return response.data.data
+    }
+    // if (response.data.code === 401) {
+    //   store.commit('SET_TOKEN', '')
+    //   store.commit('SET_USER_INFO', '')
+    //   store.commit('SET_NAV', '')
+    //   router.push('/login')
+    // }
+    // TODO 401 token 过期处理
+    console.log(response, '响应拦截')
   },
-  function (error) {
-    // 对响应错误做点什么
+  (error) => {
     return Promise.reject(error)
   }
 )
 
-//data
 const request = (options) => {
   if (options.method.toLowerCase() === 'get') {
     options.params = options.data || {}
