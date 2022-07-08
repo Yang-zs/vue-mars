@@ -23,8 +23,7 @@ export const publicRoutes = [
         path: '/index',
         name: 'index',
         meta: {
-          title: '首页',
-          icon: 'el-icon-s-home'
+          title: '欢迎体验Vue3全栈课程'
         },
         component: () => import('../views/welcome')
       },

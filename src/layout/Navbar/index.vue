@@ -4,7 +4,7 @@
       <el-icon><Fold /></el-icon>
       <el-breadcrumb :separator-icon="ArrowRight">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>欢迎体验Vue3全栈课程</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ $route.meta.title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="right">

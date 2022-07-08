@@ -1,7 +1,7 @@
 <template>
   <el-aside width="200px">
     <div class="logo">
-      <img src="http://localhost:8080/src/assets/logo.png" alt="" />
+      <img src="http://manager.9yuecloud.com/img/logo.384b81fb.png" alt="" />
       <span>Manager</span>
     </div>
     <el-menu

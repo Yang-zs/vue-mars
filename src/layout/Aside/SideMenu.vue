@@ -1,7 +1,7 @@
 <template>
   <!-- 无children -->
   <template v-for="item in menuList" :key="item">
-    <el-menu-item v-if="!item.children" :index="item.path">
+    <el-menu-item v-if="item && !item.children" :index="item.path">
       <span> {{ item.menuName }}</span>
     </el-menu-item>
   </template>
@@ -13,12 +13,14 @@
       </template>
 
       <template v-for="ite in item.children" :key="ite">
-        <el-menu-item
-          v-if="ite.path !== '/staff' && ite.path !== '/salary'"
-          :index="ite.path"
-          @click="getPath(ite.path)"
-          >{{ ite.menuName }}</el-menu-item
-        >
+        <template v-if="ite && ite.children && ite.children.length > 0">
+          <el-menu-item
+            v-if="ite.path !== '/staff' && ite.path !== '/salary'"
+            :index="ite.path"
+            @click="getPath(ite.path)"
+            >{{ ite.menuName }}
+          </el-menu-item>
+        </template>
       </template>
     </el-sub-menu>
   </template>
