@@ -3,6 +3,7 @@ import router from '../router/index'
 import loading from './loading'
 import { ElMessage } from 'element-plus'
 import { getItem, setItem } from './storage'
+import store from '../store/index'
 const TOKEN_INVALID = 'Token认证失败,请重新登录'
 const NETWORK_ERROR = '网络请求异常，请稍后重试'
 
@@ -22,7 +23,6 @@ service.interceptors.request.use(
   },
   function (error) {
     // 对请求错误做些什么
-
     loading.close()
     return Promise.reject(error)
   }
@@ -33,8 +33,10 @@ service.interceptors.response.use(
     loading.close()
     const code = response.data.code
     if (code === 200) {
+      store.dispatch('user/getMenuList')
       return response.data
     } else if (code === 500001) {
+      store.dispatch('user/handlerLoginOut')
       ElMessage.error(TOKEN_INVALID)
       setTimeout(() => {
         router.push('/login')

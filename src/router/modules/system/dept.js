@@ -8,7 +8,7 @@ export default {
   },
   children: [
     {
-      path: '/syste/dept',
+      path: '/system/dept',
       component: () => import('@/views/system/dept'),
       meta: {
         title: '部门'

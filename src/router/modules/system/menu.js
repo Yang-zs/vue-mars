@@ -8,7 +8,7 @@ export default {
   },
   children: [
     {
-      path: '/syste/menu',
+      path: '/system/menu',
       component: () => import('@/views/system/menu'),
       meta: {
         title: '菜单管理'

@@ -26,7 +26,14 @@ export const publicRoutes = [
           title: '首页',
           icon: 'el-icon-s-home'
         },
-        component: () => import('../views/home')
+        component: () => import('../views/welcome')
+      },
+      {
+        path: '/system/menu',
+        component: () => import('@/views/system/menu'),
+        meta: {
+          title: '菜单管理'
+        }
       }
     ]
   },
@@ -40,7 +47,7 @@ export const privateRoutes = [User, Role, Menu, Dept, Approve, Leave]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [...publicRoutes]
+  routes: [...publicRoutes, ...privateRoutes]
 })
 
 export default router

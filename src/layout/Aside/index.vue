@@ -1,40 +1,48 @@
 <template>
   <el-aside width="200px">
+    <div class="logo">
+      <img src="http://localhost:8080/src/assets/logo.png" alt="" />
+      <span>Manager</span>
+    </div>
     <el-menu
+      router
       active-text-color="#ffd04b"
       background-color="#001528"
       class="el-menu-vertical-demo"
       default-active="2"
       text-color="#fff"
-      @open="handleOpen"
-      @close="handleClose"
     >
-      <!-- 无children -->
-      <el-menu-item index="4">
-        <el-icon><setting /></el-icon>
-        <span> Navigator Four</span>
-      </el-menu-item>
-      <!-- 有children -->
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>Navigator One</span>
-        </template>
-
-        <el-menu-item index="1-1">item one</el-menu-item>
-      </el-sub-menu>
+      <side-menu></side-menu>
     </el-menu>
   </el-aside>
 </template>
 
-<script setup></script>
+<script setup>
+import SideMenu from './SideMenu.vue'
+</script>
 
 <style lang="scss" scoped>
 .el-aside {
   border-right: 0;
   height: 100%;
+  border-right: 0;
+  overflow: hidden;
   .el-menu {
     height: 100%;
+    border-right: 0;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    background-color: #001527;
+    height: 50px;
+    color: white;
+    img {
+      margin: 0 16px;
+      width: 32px;
+      height: 32px;
+    }
   }
 }
 </style>

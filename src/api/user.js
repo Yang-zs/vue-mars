@@ -7,6 +7,13 @@ const login = (data) => {
   })
 }
 
+const getPermissionList = () => {
+  return request({
+    url: '/users/getPermissionList',
+    method: 'GET'
+  })
+}
 export default {
-  login
+  login,
+  getPermissionList
 }

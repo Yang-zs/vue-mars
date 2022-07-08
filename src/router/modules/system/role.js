@@ -8,7 +8,7 @@ export default {
   },
   children: [
     {
-      path: '/syste/role',
+      path: '/system/role',
       component: () => import('@/views/system/role'),
       meta: {
         title: '角色管理'
