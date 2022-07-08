@@ -2,7 +2,9 @@
   <el-container>
     <Aside></Aside>
     <el-container>
-      <el-header>Header</el-header>
+      <el-header>
+        <Navbar></Navbar>
+      </el-header>
       <el-main>Main</el-main>
     </el-container>
   </el-container>
@@ -10,20 +12,20 @@
 
 <script setup>
 import Aside from './Aside/index.vue'
+import Navbar from './Navbar/index.vue'
 </script>
 
 <style lang="scss" scoped>
 .el-header,
 .el-footer {
-  background-color: #b3c0d1;
   color: #333;
-  text-align: center;
-  line-height: 60px;
+  padding: 0;
+  margin: 0;
 }
 
 .el-aside {
-  background-color: #d3dce6;
   color: #333;
+  height: 100%;
 }
 
 .el-main {

@@ -1,37 +1,55 @@
 import axios from 'axios'
-const service = axios.create({
-  baseURL: process.env.VUE_APP_SERVICE_URL,
-  timeout: 5000
-})
+import router from '../router/index'
+import loading from './loading'
+import { ElMessage } from 'element-plus'
+import { getItem, setItem } from './storage'
+const TOKEN_INVALID = 'Token认证失败,请重新登录'
+const NETWORK_ERROR = '网络请求异常，请稍后重试'
 
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 8000
+})
+// 添加请求拦截器
 service.interceptors.request.use(
-  (config) => {
+  function (config) {
+    // 在发送请求之前做些什么
+    const headers = config.headers
+    const { token = '' } = getItem('userInfo') || {}
+    if (!headers.Authorization) headers.Authorization = 'Bearer ' + token
+    loading.open()
     return config
   },
-  (error) => {
+  function (error) {
+    // 对请求错误做些什么
+
+    loading.close()
     return Promise.reject(error)
   }
 )
-
+// 添加响应拦截器
 service.interceptors.response.use(
-  (response) => {
-    // const authorization = response.headers.authorization
-    // if (authorization) {
-    //   store.commit('user/SET_TOKEN', authorization)
-    // }
-    if (response.data.code === 200) {
-      return response.data.data
+  function (response) {
+    loading.close()
+    const code = response.data.code
+    if (code === 200) {
+      return response.data
+    } else if (code === 500001) {
+      ElMessage.error(TOKEN_INVALID)
+      setTimeout(() => {
+        router.push('/login')
+      }, 1500)
+      return Promise.reject(TOKEN_INVALID)
+    } else {
+      ElMessage.error(NETWORK_ERROR)
+      return Promise.reject(NETWORK_ERROR)
     }
-    // if (response.data.code === 401) {
-    //   store.commit('SET_TOKEN', '')
-    //   store.commit('SET_USER_INFO', '')
-    //   store.commit('SET_NAV', '')
-    //   router.push('/login')
-    // }
-    // TODO 401 token 过期处理
-    console.log(response, '响应拦截')
   },
-  (error) => {
+  function (error) {
+    // 超出 2xx 范围的状态码都会触发该函数。
+    // 对响应错误做点什么
+
+    loading.close()
     return Promise.reject(error)
   }
 )

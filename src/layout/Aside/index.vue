@@ -12,7 +12,7 @@
       <!-- 无children -->
       <el-menu-item index="4">
         <el-icon><setting /></el-icon>
-        <span>Navigator Four</span>
+        <span> Navigator Four</span>
       </el-menu-item>
       <!-- 有children -->
       <el-sub-menu index="1">
@@ -29,4 +29,12 @@
 
 <script setup></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-aside {
+  border-right: 0;
+  height: 100%;
+  .el-menu {
+    height: 100%;
+  }
+}
+</style>

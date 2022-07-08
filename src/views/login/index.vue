@@ -21,9 +21,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm(ruleFormRef)"
-            >登录</el-button
-          >
+          <el-button type="primary" @click="submitForm">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -35,6 +33,7 @@ import { User, View } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 const store = useStore()
 
@@ -52,8 +51,13 @@ const loginForm = reactive({
 //   })
 // }
 const submitForm = async () => {
-  const response = await store.dispatch('user/login', loginForm)
-  console.log(response)
+  const response = await store.dispatch('user/handlerLogin', loginForm)
+  if (response !== 200) return
+  router.push('/')
+  ElMessage({
+    message: '登录成功',
+    type: 'success'
+  })
 }
 
 // 校验规则
