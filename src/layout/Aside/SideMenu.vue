@@ -30,9 +30,9 @@
 import { useStore } from 'vuex'
 const store = useStore()
 const menuList = store.getters.menuList
-console.log(menuList, 'caidanshuju')
+// console.log(menuList, 'caidanshuju')
 const getPath = (path) => {
-  console.log(path, '当前路径')
+  // console.log(path, '当前路径')
 }
 </script>
 

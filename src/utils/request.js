@@ -33,10 +33,10 @@ service.interceptors.response.use(
     loading.close()
     const code = response.data.code
     if (code === 200) {
-      store.dispatch('user/getMenuList')
+      // store.dispatch('user/getMenuList')
       return response.data
     } else if (code === 500001) {
-      store.dispatch('user/handlerLoginOut')
+      // store.dispatch('user/handlerLoginOut')
       ElMessage.error(TOKEN_INVALID)
       setTimeout(() => {
         router.push('/login')

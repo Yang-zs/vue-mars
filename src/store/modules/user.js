@@ -20,6 +20,9 @@ export default {
     SET_MENU_LIST(state, menuList) {
       state.menuList = menuList
       setItem('menuList', menuList)
+    },
+    REMOVE_MENU_LIST(state, menuList) {
+      removeItem('menuList')
     }
   },
   actions: {
@@ -43,6 +46,7 @@ export default {
     handlerLoginOut({ commit }) {
       commit('SET_TOKEN', '')
       commit('SET_USER_INFO', [])
+      commit('REMOVE_MENU_LIST')
       removeItem('token')
       removeItem('userInfo')
     }

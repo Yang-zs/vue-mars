@@ -1,4 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { getItem } from '@/utils/storage'
+import { ElMessage } from 'element-plus'
 // system
 import User from './modules/system/user'
 import Role from './modules/system/role'
@@ -7,6 +9,7 @@ import Dept from './modules/system/dept'
 // audit
 import Approve from './modules/audit/approve'
 import Leave from './modules/audit/leave'
+
 export const publicRoutes = [
   {
     path: '/login',
@@ -47,6 +50,20 @@ export const privateRoutes = [User, Role, Menu, Dept, Approve, Leave]
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [...publicRoutes, ...privateRoutes]
+})
+
+// 挂载路由守卫
+router.beforeEach((to, from, next) => {
+  // to and from are both route objects. must call `next`.
+  if (to.path === '/login') return next()
+  const tokenStr = getItem('token')
+  if (!tokenStr) {
+    next('/login')
+    ElMessage('请重新登录')
+    return
+  }
+
+  next()
 })
 
 export default router

@@ -53,6 +53,7 @@ const loginForm = reactive({
 const submitForm = async () => {
   const response = await store.dispatch('user/handlerLogin', loginForm)
   if (response !== 200) return
+  await store.dispatch('user/getMenuList')
   router.push('/')
   ElMessage({
     message: '登录成功',
