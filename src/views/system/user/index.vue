@@ -14,7 +14,13 @@
         <el-table-column prop="userName" label="用户名" width="120" />
         <el-table-column prop="userEmail" label="用户邮箱" />
         <el-table-column prop="job" label="用户角色" />
-        <el-table-column prop="state" label="用户状态" />
+        <el-table-column prop="state" label="用户状态">
+          <template #default="scope">
+            <span v-if="scope.row.state === 1">在职</span>
+            <span v-if="scope.row.state === 2">离职</span>
+            <span v-if="scope.row.state === 3">试用期</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="注册时间" />
         <el-table-column prop="lastLoginTime" label="最后登录时间" />
         <el-table-column label="操作">
@@ -34,15 +40,16 @@
       <!-- 分页 -->
     </el-card>
     <el-card class="pagination">
-      <template>
-        <el-pagination
-          :page-size="20"
-          :pager-count="11"
-          layout="prev, pager, next"
-          :total="1000"
-          background
-        />
-      </template>
+      <el-pagination
+        background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pageNum"
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :total="total"
+      >
+      </el-pagination>
     </el-card>
   </div>
 </template>
@@ -55,7 +62,6 @@ const userList = ref([])
 const pageNum = ref(1)
 const pageSize = ref(10)
 const total = ref()
-
 const multipleTableRef = ref()
 const multipleSelection = ref()
 const toggleSelection = (rows) => {
@@ -79,6 +85,9 @@ const getList = async () => {
   const { list, page } = await store.dispatch('userList/getUserList', obj)
   console.log(list, page, 'all/list')
   userList.value = list
+  pageNum.value = page.pageNum
+  pageSize.value = page.pageSize
+  total.value = page.total
   console.log(userList, 'tableData')
 }
 onMounted(() => {
@@ -90,6 +99,18 @@ const handleEdit = (index, row) => {
 }
 const handleDelete = (index, row) => {
   console.log(index, row)
+}
+// 分页
+const handleSizeChange = (val) => {
+  console.log(`每页 ${val} 条`)
+  pageSize.value = val
+  getList()
+}
+const handleCurrentChange = (val) => {
+  console.log(`当前页: ${val}`)
+  pageNum.value = val
+  getList()
+  console.log(total.value, '213')
 }
 </script>
 
