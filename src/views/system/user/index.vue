@@ -1,10 +1,34 @@
 <template>
   <div class="userPage">
     <!-- 搜索模块 -->
-    <el-card class="search-card"> </el-card>
+    <el-card class="search-card">
+      <el-form ref="search" :inline="true" :model="searchForm">
+        <el-form-item label="用户ID" prop="userId">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户ID" />
+        </el-form-item>
+        <el-form-item label="用户名称" prop="userName">
+          <el-input
+            v-model="searchForm.userName"
+            placeholder="请输入用户名称"
+          />
+        </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="searchForm.state">
+            <el-option :value="0" label="所有"></el-option>
+            <el-option :value="1" label="在职"></el-option>
+            <el-option :value="2" label="离职"></el-option>
+            <el-option :value="3" label="试用期"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleQuery">查询</el-button>
+          <el-button @click="handleReset('search')">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
     <el-card class="table-card">
       <!-- 数据模块 -->
-      <el-button type="primary">新增</el-button>
+      <el-button type="primary" @click="dialogVisible = true">新增</el-button>
       <el-button type="danger">批量删除</el-button>
       <!-- 表格 -->
       <!-- @selection-change="handleSelectionChange" -->
@@ -51,17 +75,42 @@
       >
       </el-pagination>
     </el-card>
+    <!-- 添加弹框 -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="用户新增"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>表单内容</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogVisible = false"
+            >确定</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
+import { ElMessageBox } from 'element-plus'
+const dialogVisible = ref(false)
 const store = useStore()
 const userList = ref([])
 const pageNum = ref(1)
 const pageSize = ref(10)
 const total = ref()
+const searchForm = reactive({
+  state: 0,
+  userId: '',
+  userName: ''
+})
+const search = ref()
 const multipleTableRef = ref()
 const multipleSelection = ref()
 const toggleSelection = (rows) => {
@@ -78,9 +127,9 @@ const getList = async () => {
   const obj = {
     pageNum: pageNum.value,
     pageSize: pageSize.value,
-    userId: '',
-    userName: '',
-    state: 0
+    userId: searchForm.userId,
+    userName: searchForm.userName,
+    state: searchForm.state
   }
   const { list, page } = await store.dispatch('userList/getUserList', obj)
   console.log(list, page, 'all/list')
@@ -111,6 +160,25 @@ const handleCurrentChange = (val) => {
   pageNum.value = val
   getList()
   console.log(total.value, '213')
+}
+// 查询
+const handleQuery = () => {
+  getList()
+}
+// 重置
+const handleReset = (form) => {
+  // proxy.$refs[form].resetFields()
+  console.log(222)
+}
+// 弹框关闭
+const handleClose = (done) => {
+  ElMessageBox.confirm('Are you sure to close this dialog?')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 
